@@ -1,0 +1,50 @@
+project:
+  name: benchmark-choice-factor-premia-india
+  working_title: Does Benchmark Choice Change Measured Factor Premia in India?
+  base_currency: INR
+  return_frequency: monthly
+
+study_period:
+  preferred_start: 2015-01-01
+  preferred_end: 2025-12-31
+  fallback_start: 2018-01-01
+
+universes:
+  primary:
+    - liquid_nse_universe
+  benchmark_comparisons:
+    - nifty_50
+    - nifty_100
+    - nifty_500
+
+factors:
+  core:
+    - size_smb
+    - value_hml
+    - momentum_wml
+    - low_volatility
+  optional:
+    - quality
+    - profitability
+    - dividend_yield
+    - liquidity
+
+portfolio_construction:
+  rebalance_frequency: monthly
+  number_of_buckets: 5
+  weighting_methods:
+    - equal_weighted
+    - value_weighted
+  momentum:
+    lookback_months: 12
+    skip_months: 1
+  volatility:
+    lookback_months: 12
+  liquidity_filter:
+    traded_value_percentile_cutoff: 0.20
+
+methodology_warnings:
+  survivorship_bias: true
+  look_ahead_bias: true
+  corporate_action_adjustment_risk: true
+  liquidity_bias: true
