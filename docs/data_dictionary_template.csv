@@ -1,0 +1,17 @@
+dataset,column_name,description,source,frequency,notes
+monthly_stock_panel,date,Month-end observation date,Constructed from price data,Monthly,
+monthly_stock_panel,symbol,NSE stock symbol,NSE,Monthly,May require ticker-change mapping
+monthly_stock_panel,company_name,Company name,NSE or company filings,Monthly,
+monthly_stock_panel,universe,Benchmark or investment universe,NSE Indices or constructed,Monthly,Nifty 50/Nifty 100/Nifty 500/Liquid NSE universe
+monthly_stock_panel,close,Closing price,NSE price-volume data,Daily or monthly,Adjustments must be documented
+monthly_stock_panel,return_1m,One-month return,Constructed,Monthly,
+monthly_stock_panel,market_cap,Market capitalization,NSE or constructed,Monthly,Required for size factor and value weighting
+monthly_stock_panel,book_to_market,Book value divided by market cap,Annual reports or public financials,Annual/monthly aligned,Data timing must avoid look-ahead bias
+monthly_stock_panel,momentum_signal,Prior 12-month return excluding most recent month,Constructed,Monthly,
+monthly_stock_panel,volatility_12m,Trailing 12-month volatility,Constructed,Monthly,
+monthly_stock_panel,traded_value,Price multiplied by traded volume,NSE price-volume data,Daily/monthly,
+factor_returns,date,Month-end factor return date,Constructed,Monthly,
+factor_returns,universe,Benchmark universe,Constructed,Monthly,
+factor_returns,factor_name,Factor identifier,Constructed,Monthly,Size/value/momentum/low volatility
+factor_returns,factor_return,Long-short factor return,Constructed,Monthly,
+factor_returns,weighting_method,Equal-weighted or value-weighted,Constructed,Monthly,
