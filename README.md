@@ -34,13 +34,19 @@ Optional later extensions may include quality, profitability, dividend yield, an
 
 ```text
 benchmark-choice-factor-premia-india/
+├── config/
+│   └── project_config.yaml
 ├── data/
+│   ├── README.md
 │   ├── raw/
 │   ├── interim/
 │   └── processed/
 ├── docs/
 │   ├── data_sources.md
+│   ├── execution_checklist.md
+│   ├── how_to_run.md
 │   ├── methodology.md
+│   ├── roadmap.md
 │   └── variable_definitions.md
 ├── notebooks/
 │   ├── 01_data_collection.ipynb
@@ -55,18 +61,36 @@ benchmark-choice-factor-premia-india/
 ├── paper/
 │   ├── draft.md
 │   └── references.bib
+├── scripts/
+│   ├── build_monthly_panel.py
+│   ├── build_factor_returns.py
+│   └── analyze_factor_returns.py
 └── src/
     ├── data_loader.py
     ├── cleaning.py
     ├── factor_construction.py
+    ├── panel_builder.py
     ├── performance_metrics.py
+    ├── plotting.py
     ├── portfolio_sorts.py
-    └── regression_tests.py
+    ├── regression_tests.py
+    └── signal_builder.py
 ```
 
 ## Public-data principle
 
 This project is designed to use only freely accessible public data sources. It avoids Bloomberg, Refinitiv, Capital IQ, Prowess, FactSet, PitchBook, Mergermarket, and other paid databases.
+
+## Workflow
+
+The current planned workflow is:
+
+1. Place raw public data files locally in `data/raw/`.
+2. Build a monthly stock panel using `scripts/build_monthly_panel.py`.
+3. Add universe membership, market capitalization, and value variables.
+4. Build factor returns using `scripts/build_factor_returns.py`.
+5. Analyze factor performance using `scripts/analyze_factor_returns.py`.
+6. Use notebooks for exploration, robustness checks, and paper tables/figures.
 
 ## Expected outputs
 
@@ -78,7 +102,7 @@ This project is designed to use only freely accessible public data sources. It a
 
 ## Current status
 
-Research design and repository scaffold are being built.
+The research design, repository structure, documentation, notebooks, Python utilities, and script templates are in place. The next major step is to verify exact public data sources and build the first real monthly stock panel.
 
 ## Disclaimer
 
