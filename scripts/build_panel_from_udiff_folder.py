@@ -49,7 +49,37 @@ def build_monthly_panel(daily: pd.DataFrame) -> pd.DataFrame:
         )
     )
     monthly = monthly.rename(columns={"month": "date"})
+    monthly = monthly.sort_values(["symbol", "date"]).reset_index(drop=True)
+
     monthly["return_1m"] = monthly.groupby("symbol")["close"].pct_change()
+
+    # Prior 12-month cumulative return excluding the most recent month.
+    # This avoids using the same month return as both signal and outcome.
+    shifted_return = monthly.groupby("symbol")["return_1m"].shift(1)
+    monthly["momentum_signal_12_1"] = (
+        (1.0 + shifted_return)
+        .groupby(monthly["symbol"])
+        .rolling(window=12, min_periods=12)
+        .apply(lambda x: x.prod() - 1.0, raw=False)
+        .reset_index(level=0, drop=True)
+    )
+
+    monthly["volatility_12m"] = (
+        shifted_return.groupby(monthly["symbol"])
+        .rolling(window=12, min_periods=12)
+        .std()
+        .reset_index(level=0, drop=True)
+    )
+
+    monthly["avg_monthly_traded_value_12m"] = (
+        monthly.groupby("symbol")["traded_value"]
+        .shift(1)
+        .groupby(monthly["symbol"])
+        .rolling(window=12, min_periods=12)
+        .mean()
+        .reset_index(level=0, drop=True)
+    )
+
     return monthly.sort_values(["symbol", "date"]).reset_index(drop=True)
 
 
@@ -77,6 +107,9 @@ def main() -> None:
     print(f"Trading dates: {daily['date'].nunique():,}")
     print(f"Unique symbols: {daily['symbol'].nunique():,}")
     print(f"Monthly rows: {len(monthly):,}")
+    print(f"Months: {monthly['date'].nunique():,}")
+    print(f"Rows with 12-1 momentum signal: {monthly['momentum_signal_12_1'].notna().sum():,}")
+    print(f"Rows with 12m volatility signal: {monthly['volatility_12m'].notna().sum():,}")
     print(f"Saved daily panel: {daily_output}")
     print(f"Saved monthly panel: {monthly_output}")
 
